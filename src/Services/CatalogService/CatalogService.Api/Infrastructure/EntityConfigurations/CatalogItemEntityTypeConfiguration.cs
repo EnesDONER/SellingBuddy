@@ -16,7 +16,7 @@ namespace CatalogService.Api.Infrastructure.EntityConfigurations
 
             builder.Property(p => p.Name).IsRequired().HasMaxLength(128);
 
-            builder.Property(p => p.Price).IsRequired();
+            builder.Property(p => p.Price).IsRequired().HasColumnType("decimal(18,2)");
 
             builder.Property(p => p.PictureFileName).IsRequired(false);
 

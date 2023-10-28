@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CatalogService.Api.Infrastructure.Context
 {
-    public class CatalogContext:DbContext
+    public class CatalogContext : DbContext
     {
         public const string DEFAULT_SCHEMA = "catalog";
 

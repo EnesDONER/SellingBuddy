@@ -1,7 +1,0 @@
-CatalogBrand
-Azure
-.NET
-SQL Server
-Other
-CatalogBrandTestOne
-CatalogBrandTestTwo
