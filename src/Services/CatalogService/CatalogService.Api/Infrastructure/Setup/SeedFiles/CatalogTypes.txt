@@ -1,0 +1,7 @@
+CatalogType
+Mug
+T-Shirt
+Sheet
+USB MEmory Stick
+CatalogTypeTestOne
+CatalogTypeTestTwo
