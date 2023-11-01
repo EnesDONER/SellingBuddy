@@ -14,7 +14,7 @@ namespace IdentityService.Api.Application.Services
             var claims = new Claim[]
             {
                 new Claim(ClaimTypes.NameIdentifier, loginRequest.UserName),
-                new Claim(ClaimTypes.Name, "ErknYldrm")
+                new Claim(ClaimTypes.Name, "EnesDoner")
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SellingBudySecretKeyShouldBeLong"));

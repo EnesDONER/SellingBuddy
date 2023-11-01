@@ -1,3 +1,8 @@
+using Ocelot.DependencyInjection;
+using Ocelot.Middleware;
+using Ocelot.Provider.Consul;
+using Ocelot.Values;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,6 +12,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("Configurations/ocelot.json")
+    .AddEnvironmentVariables()
+    .Build();
+
+builder.Services.AddOcelot(configuration).AddConsul();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -16,9 +30,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+await app.UseOcelot();
+
+
 
 app.UseAuthorization();
+
+app.UseAuthentication();
 
 app.MapControllers();
 

@@ -1,4 +1,4 @@
-namespace WebApplication1
+namespace Web.ApiGateway
 {
     public class WeatherForecast
     {
