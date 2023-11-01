@@ -1,4 +1,6 @@
 using IdentityService.Api.Application.Services;
+using IdentityService.Api.Extensions;
+using Microsoft.Extensions.Configuration;
 using System.Security.Principal;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +11,13 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .Build();
+
+builder.Services.ConfigureConsul(builder.Configuration);
+
 builder.Services.AddScoped<IIdentityService, IdentityService.Api.Application.Services.IdentityService>();
 var app = builder.Build();
 
@@ -19,10 +28,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+var lifetime = app.Services.GetRequiredService<IHostApplicationLifetime>();
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+app.Start();
+app.RegisterWithConsul(lifetime);
+app.WaitForShutdown();

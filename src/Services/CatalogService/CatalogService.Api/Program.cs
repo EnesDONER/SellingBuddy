@@ -9,22 +9,29 @@ using Consul;
 using Microsoft.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using CatalogService.Api.Infrastructure;
+using CatalogService.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<CatalogSettings>();
+
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .Build();
-builder.Services.AddScoped<CatalogSettings>();
+
+
+
+builder.Services.ConfigureConsul(builder.Configuration);
+
 builder.Services.AddDbContext<CatalogContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("MSSQLConnection"));
 });
-
 
 var app = builder.Build();
 
@@ -35,8 +42,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+var lifetime = app.Services.GetRequiredService<IHostApplicationLifetime>();
+
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
-app.Run();
+app.Start();
+app.RegisterWithConsul(lifetime);
+app.WaitForShutdown();
