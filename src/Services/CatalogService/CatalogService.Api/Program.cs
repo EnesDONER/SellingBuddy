@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-
 using CatalogService.Api.Infrastructure.Context;
 using Consul;
 using Microsoft.AspNetCore;
